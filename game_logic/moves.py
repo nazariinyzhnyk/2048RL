@@ -21,30 +21,47 @@ def get_initial_field(n):
     return field
 
 
-def move_row(r):
-    return r
+def move_row(arr):
+    row_points = 0
+    arr = arr[arr != 0]
+    for i in range(len(arr) - 1, 0, -1):
+        if arr[i] == arr[i - 1]:
+            arr[i] *= 2
+            row_points += arr[i]
+            arr[i - 1] = 0
+    arr = arr[arr != 0]
+    arr = np.append(np.zeros(4 - len(arr)), arr)
+    return row_points, arr
 
 
 def move_field(field, move):
+    field = field.copy()
     new_points = 0
     if move == 'up':
-        for i in range(len(field[1])):
-            print(1)
+        for i in range(len(field)):
+            row_points, field[:, i] = move_row(field[:, i][::-1])
+            field[:, i] = field[:, i][::-1]
+            new_points += row_points
     elif move == 'down':
-        for i in range(len(field[1])):
-            print(1)
+        for i in range(len(field)):
+            row_points, field[:, i] = move_row(field[:, i])
+            new_points += row_points
     elif move == 'right':
-        for i in range(len(field[1])):
-            print(1)
+        for i in range(len(field)):
+            row_points, field[i, :] = move_row(field[i, :])
+            new_points += row_points
     elif move == 'left':
-        for i in range(len(field[1])):
-            print(1)
+        for i in range(len(field)):
+            row_points, field[i, :] = move_row(field[i, :][::-1])
+            field[i, :] = field[i, :][::-1]
+            new_points += row_points
     return field, new_points
 
 
 def field_stucked(field):
     for mv in ['up', 'down', 'right', 'left']:
         fcopy = field.copy()
-        if not np.array_equal(field, move_field(fcopy, mv)):
+        fcopy, _ = move_field(fcopy, mv)
+        if not np.array_equal(field, fcopy):
             return False
     return True
