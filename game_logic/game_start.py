@@ -1,5 +1,4 @@
 from game_logic.moves import *
-from random import randint
 
 FIELD_SIZE = 4
 
@@ -9,10 +8,10 @@ if __name__ == '__main__':
     while True:
         print('Current points: {}.'.format(points))
         print(field)
-        move = input('Enter your move: ')
-        while move not in ['up', 'down', 'right', 'left']:
-            move = input('Enter your move: ')
-        # move = ['up', 'down', 'right', 'left'][randint(0, 3)]  # rand move selection
+        # move = input('Enter your move: ')
+        # while move not in ['up', 'down', 'right', 'left']:
+        #     move = input('Enter your move: ')
+        move = ['up', 'down', 'right', 'left'][randint(0, 3)]  # rand move selection
         field_moved, new_points = move_field(field, move)
         points += new_points
         if not np.array_equal(field_moved, field):
